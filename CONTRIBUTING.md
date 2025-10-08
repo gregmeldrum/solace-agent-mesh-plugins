@@ -9,11 +9,39 @@ We'd love for you to contribute and welcome your help. Here are some guidelines 
 - [Questions](#questions)
 
 ## <a name="new"></a> Do you want to submit a new SAM Community Plugin?
+A Solace Agent Mesh Plugin is a distributable abstraction for SAM Agents, Gateways and custom integrations.  
+
+To create a new plugin for the SAM Community follow these steps:
+#### Step 1: Understand a SAM Plugin
+- Browse the [SAM Documentation for Plugins](https://solacelabs.github.io/solace-agent-mesh/docs/documentation/concepts/plugins) 
+- Understand the process to [Build your own SAM agent](https://solacelabs.github.io/solace-agent-mesh/docs/documentation/tutorials/custom-agent)
+
+#### Step 2: Browse the Repo
+
+Check that the Agent or Gateway that you would like to create is not already exposed as a Community plugin or as a [core plugin for SAM](https://github.com/SolaceLabs/solace-agent-mesh-core-plugins)
 
 
+#### Step 3: Follow Steps 1 and 2 of [Submitting](#submitting)
 
+You should now have your own fork and branch of the Community Plugins repo to work on. 
 
-Follow the [Submitting](#submitting) steps to add your changes to the SAM Community Plugin catalog. 
+#### Step 4: Initialize a new SAM Plugin
+`sam plugin create <your-plugin-name> --type <agent or gateway>`
+SAM plugins may contain custom code under the `/src` directory or they may be entirely contained in the `config.yaml` file depending on the complexity and requirements of your plugin. 
+
+#### Step 5: Build your SAM Plugin
+In this step we need to add the contents to your newly initialized plugin directory in your branch.  
+
+*Option 1*: Create the implementation and `config.yaml` from scratch.  You will choose this option if you have not done any work on your SAM Agent or Gateway elsewhere.  
+*Option 2*: Merge your implementation and `config.yaml` from another location into this plugin directory.  Contributors may choose this option if they previously created a SAM Agent just for their own use in SAM but later decided to contribute it to the Solace Agent Mesh Community as a Plugin.  
+To merge your existing agent you will:
+1.  Copy the contents of your existing `config.yaml` from the `app:` tag to the end of the file. 
+2. Copy any necessary source code into `/src` structure of your repository. 
+3. Update the README.md file in your plugin directory to comply with the [Readme Template](./PLUGIN_README_TEMPLATE.md)
+4. Update the project root [Readme](./README.md) to include your new plugin in the table. 
+
+#### Step 4: Your Plugin is ready to Submit
+Pick up at step 3 in the [Submitting](#submitting) steps to add your changes to the SAM Community Plugin catalog. 
 
 
 ## <a name="issue"></a> Did you find an issue with an existing SAM Community Plugin?
