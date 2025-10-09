@@ -34,7 +34,7 @@ SAM plugins may contain custom code under the `/src` directory, or they may be e
 #### Step 5: Build Your SAM Plugin
 In this step, we need to add the contents to your newly initialized plugin directory in your branch.
 
-**Option 1**: Create the implementation and `config.yaml` from scratch. You will choose this option if you have not done any work on your SAM Agent or Gateway elsewhere.
+**Option 1**: Create the logic implementation from scratch (if required) and customize the generated `config.yaml` to build your plugin functionality, [see the following guides](https://solacelabs.github.io/solace-agent-mesh/docs/documentation/tutorials/custom-agent). You will choose this option if you have not done any work on your SAM Agent or Gateway elsewhere.
 
 **Option 2**: Merge your implementation and `config.yaml` from another location into this plugin directory. Contributors may choose this option if they previously created a SAM Agent just for their own use in SAM but later decided to contribute it to the Solace Agent Mesh Community as a Plugin.
 
