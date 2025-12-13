@@ -294,10 +294,6 @@ Phone: (555) 123-4567
 Email: john.smith@example.com
 ```
 
-## License
-
-This plugin follows the same license as Solace Agent Mesh.
-
 ## Support
 
 For issues and questions:
@@ -321,3 +317,11 @@ Contributions welcome! Consider adding:
 - Apple Silicon platform validation
 - SAM artifact and file path input modes
 - Comprehensive OCR and image analysis capabilities
+
+## License
+
+See project license.
+
+## Author
+
+Greg Meldrum <greg.meldrum@solace.com>
