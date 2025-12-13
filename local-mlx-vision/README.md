@@ -34,70 +34,58 @@ The plugin automatically installs:
 
 ## Installation
 
-### 1. Build the Plugin
+### 1. Install the Hugging Face CLI (Recommended)
 
-From the plugin directory:
-
-```bash
-sam plugin build
-```
-
-This creates a wheel file in the `dist/` directory.
-
-### 2. Install in Your SAM Project
+To pre-download the model and avoid long waits during first use:
 
 ```bash
-cd /path/to/your/sam/project
-sam plugin add vision-agent --plugin /path/to/local-mlx-vision/dist/local_mlx_vision-0.1.0-py3-none-any.whl
+pip install "huggingface-hub[cli]"
 ```
 
-Replace `vision-agent` with your desired agent name.
+### 2. Pre-download the Model (Recommended)
 
-### 3. Download the Model
+Download the model before using the plugin to avoid timeouts:
 
-The first time you run the agent, MLX will download the Qwen3-VL-2B-Instruct-4bit model (~2GB). This happens automatically.
+```bash
+huggingface-cli download mlx-community/Qwen3-VL-2B-Instruct-4bit
+```
+
+This downloads ~2GB and may take several minutes. Without pre-downloading, the model will load on first invocation, which may take a long time and could fail the task.
+
+### 3. Install the Plugin
+
+To add this plugin to your SAM project, run the following command:
+
+```bash
+sam plugin add <your-new-component-name> --plugin git+https://github.com/solacecommunity/solace-agent-mesh-plugins#subdirectory=local-mlx-vision
+```
+
+This will create a new component configuration at `configs/plugins/<your-new-component-name-kebab-case>.yaml`.
+
+Alternatively, you can install via the SAM Plugin Catalog:
+
+1. Launch SAM plugin catalog: `sam plugin catalog`
+2. Add this repository to your SAM instance if you have not done so already: `+ Add Registry`, paste in the git repository [https://github.com/solacecommunity/solace-agent-mesh-plugins](https://github.com/solacecommunity/solace-agent-mesh-plugins) with name `Community`
+3. Install the plugin using the install button in the GUI or with: `sam plugin add local-mlx-vision --plugin local-mlx-vision`
 
 ## Usage
 
-### Starting the Agent
-
-```bash
-# From your SAM project directory
-sam run
-
-# Or run specific agent
-sam run configs/agents/vision-agent.yaml
-```
+Once the agent is running, you can interact with it through the SAM orchestrator using natural language prompts.
 
 ### Example Prompts
 
-#### OCR a Receipt
+#### OCR and Data Extraction
+- *"OCR this receipt and extract all fields as JSON"*
+- *"Extract the name, address, and phone number from this form"*
+- *"Read all the text from this document image"*
 
-```
-User: Analyze this receipt and extract all fields as JSON
-Agent: [Uses analyze_image tool to extract structured data]
-```
+#### Image Description
+- *"What's happening in this image?"*
 
-#### Describe an Image
-
-```
-User: What's happening in this image?
-Agent: [Provides detailed description of image contents]
-```
-
-#### Extract Form Data
-
-```
-User: OCR this form and extract the name, address, and phone number fields
-Agent: [Extracts specific fields from the form image]
-```
-
-#### Identify Objects
-
-```
-User: List all objects visible in this photo
-Agent: [Identifies and lists objects in the image]
-```
+#### Structured Data Extraction
+- *"Extract all fields from this invoice and format as JSON"*
+- *"List all the items and prices from this menu"*
+- *"What are the key details from this business card?"*
 
 ### Using the Tool Directly
 

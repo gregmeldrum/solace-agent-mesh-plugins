@@ -30,19 +30,19 @@ This plugin runs a Flask web server that makes artifacts accessible via HTTP. It
 
 ## Installation
 
-1. Build the plugin:
+To add this plugin to your SAM project, run the following command:
+
 ```bash
-cd artifact-host-agent
-sam plugin build
+sam plugin add <your-new-component-name> --plugin git+https://github.com/solacecommunity/solace-agent-mesh-plugins#subdirectory=artifact-host-agent
 ```
 
-2. Install in your SAM project:
-```bash
-cd /path/to/your/sam-project
-sam plugin add artifact-host-agent --plugin /path/to/artifact-host-agent/dist/artifact_host_agent-0.1.0-py3-none-any.whl
-```
+This will create a new component configuration at `configs/plugins/<your-new-component-name-kebab-case>.yaml`.
 
-3. The plugin configuration will be created at `configs/agents/artifact-host-agent.yaml`
+Alternatively, you can install via the SAM Plugin Catalog:
+
+1. Launch SAM plugin catalog: `sam plugin catalog`
+2. Add this repository to your SAM instance if you have not done so already: `+ Add Registry`, paste in the git repository [https://github.com/solacecommunity/solace-agent-mesh-plugins](https://github.com/solacecommunity/solace-agent-mesh-plugins) with name `Community`
+3. Install the plugin using the install button in the GUI or with: `sam plugin add artifact-host-agent --plugin artifact-host-agent`
 
 ## Configuration
 
@@ -89,13 +89,7 @@ Generated URLs will use this base instead of localhost.
 
 ## Usage
 
-### Running the Agent
-
-```bash
-sam run configs/agents/artifact-host-agent.yaml
-```
-
-The web server starts automatically on agent launch.
+Once the agent is running, you can interact with it through the SAM orchestrator using natural language prompts. The web server starts automatically on agent launch.
 
 ### Accessing the Web Interface
 
@@ -112,35 +106,27 @@ http://localhost:8080/report.pdf
 http://localhost:8080/audio.mp3
 ```
 
-### Example Interactions
+### Example Prompts
 
-**Host an artifact:**
-```
-User: Host the photo.jpg file so I can access it
-Agent: [Uses host_artifact tool]
-Response: Artifact hosted at http://localhost:8080/photo.jpg
-```
+#### Basic Hosting
+- *"Host the photo.jpg file so I can access it"*
+- *"Make this artifact available via URL"*
+- *"Publish this file to the web server"*
 
-**Host with custom filename:**
-```
-User: Host report.pdf as "latest_report.pdf"
-Agent: [Uses host_artifact with custom_filename="latest_report"]
-Response: Artifact hosted at http://localhost:8080/latest_report.pdf
-```
+#### Custom Filenames
+- *"Host report.pdf as latest_report.pdf"*
+- *"Publish this image with the name thumbnail.jpg"*
+- *"Make this file available as summary.txt"*
 
-**Host specific version:**
-```
-User: Host version 2 of the analysis document
-Agent: [Uses host_artifact with artifact_filename="analysis.pdf:2"]
-Response: Artifact version 2 hosted at http://localhost:8080/analysis.pdf
-```
+#### Version Management
+- *"Host version 2 of the analysis document"*
+- *"Publish the previous version of this report"*
+- *"Make version 3 of the image accessible"*
 
-**Share with external URL:**
-```
-User: Share this image externally
-Agent: [Uses host_artifact, returns custom base_url if configured]
-Response: Artifact hosted at https://myserver.com/artifacts/image.jpg
-```
+#### Sharing
+- *"Share this image externally"*
+- *"Give me a URL to access this PDF"*
+- *"How can I share this file with others?"*
 
 ## Tool Details
 

@@ -60,65 +60,50 @@ Download from https://imagemagick.org/script/download.php
 
 ## Installation
 
-1. Build the plugin:
+To add this plugin to your SAM project, run the following command:
+
 ```bash
-cd imagemagick
-sam plugin build
+sam plugin add <your-new-component-name> --plugin git+https://github.com/solacecommunity/solace-agent-mesh-plugins#subdirectory=imagemagick
 ```
 
-2. Install in your SAM project:
-```bash
-cd /path/to/your/sam-project
-sam plugin add imagemagick --plugin /path/to/imagemagick/dist/imagemagick-0.1.0-py3-none-any.whl
-```
+This will create a new component configuration at `configs/plugins/<your-new-component-name-kebab-case>.yaml`.
 
-3. The plugin configuration will be created at `configs/agents/imagemagick.yaml`
+Alternatively, you can install via the SAM Plugin Catalog:
+
+1. Launch SAM plugin catalog: `sam plugin catalog`
+2. Add this repository to your SAM instance if you have not done so already: `+ Add Registry`, paste in the git repository [https://github.com/solacecommunity/solace-agent-mesh-plugins](https://github.com/solacecommunity/solace-agent-mesh-plugins) with name `Community`
+3. Install the plugin using the install button in the GUI or with: `sam plugin add imagemagick --plugin imagemagick`
 
 ## Usage
 
-### Running the Agent
+Once the agent is running, you can interact with it through the SAM orchestrator using natural language prompts.
 
-```bash
-sam run configs/agents/imagemagick.yaml
-```
+### Example Prompts
 
-Or run all agents:
-```bash
-sam run
-```
+#### Cropping
+- *"Crop photo.jpg to 800x600 pixels starting at position 100,50"*
+- *"Crop this image to a square 500x500"*
+- *"Cut out the center 1000x1000 pixels from this image"*
 
-### Example Interactions
+#### Resizing
+- *"Resize banner.png to 50% of its original size"*
+- *"Make this image 1920 pixels wide"*
+- *"Scale this photo down to 800x600"*
 
-**Crop an image:**
-```
-User: Crop photo.jpg to 800x600 pixels starting at position 100,50
-Agent: [Uses crop_image tool]
-```
+#### Format Conversion
+- *"Convert image.png to JPEG with 90% quality"*
+- *"Change this image to WebP format"*
+- *"Convert this JPEG to PNG"*
 
-**Resize an image:**
-```
-User: Resize banner.png to 50% of its original size
-Agent: [Uses resize_image with percentage=50]
-```
+#### Text Overlay
+- *"Add Copyright 2024 text at the bottom of photo.jpg in white"*
+- *"Put a watermark saying My Company in the center"*
+- *"Add the text For Sale in red at the top of this image"*
 
-**Convert format:**
-```
-User: Convert image.png to JPEG with 90% quality
-Agent: [Uses convert_image_format with output_format="jpg", quality=90]
-```
-
-**Add text overlay:**
-```
-User: Add "Copyright 2024" text at the bottom of photo.jpg in white
-Agent: [Uses add_text_overlay with text="Copyright 2024", position="south", font_color="white"]
-```
-
-**Get image information:**
-```
-User: What are the dimensions of photo.jpg?
-Agent: [Uses get_image_info]
-Response: The image is 1920x1080 pixels, JPEG format, 245 KB
-```
+#### Image Information
+- *"What are the dimensions of photo.jpg?"*
+- *"Get the file size and format of this image"*
+- *"Show me the metadata for this picture"*
 
 ## Tool Details
 

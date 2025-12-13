@@ -52,69 +52,50 @@ Search the web using DuckDuckGo with support for four search types:
 
 ## Installation
 
-1. Build the plugin:
+To add this plugin to your SAM project, run the following command:
+
 ```bash
-cd web-agent
-sam plugin build
+sam plugin add <your-new-component-name> --plugin git+https://github.com/solacecommunity/solace-agent-mesh-plugins#subdirectory=web-agent
 ```
 
-2. Install in your SAM project:
-```bash
-cd /path/to/your/sam-project
-sam plugin add web-agent --plugin /path/to/web-agent/dist/web_agent-0.1.0-py3-none-any.whl
-```
+This will create a new component configuration at `configs/plugins/<your-new-component-name-kebab-case>.yaml`.
 
-3. The plugin configuration will be created at `configs/agents/web-agent.yaml`
+Alternatively, you can install via the SAM Plugin Catalog:
+
+1. Launch SAM plugin catalog: `sam plugin catalog`
+2. Add this repository to your SAM instance if you have not done so already: `+ Add Registry`, paste in the git repository [https://github.com/solacecommunity/solace-agent-mesh-plugins](https://github.com/solacecommunity/solace-agent-mesh-plugins) with name `Community`
+3. Install the plugin using the install button in the GUI or with: `sam plugin add web-agent --plugin web-agent`
 
 ## Usage
 
-### Running the Agent
+Once the agent is running, you can interact with it through the SAM orchestrator using natural language prompts.
 
-```bash
-sam run configs/agents/web-agent.yaml
-```
+### Example Prompts
 
-Or run all agents:
-```bash
-sam run
-```
+#### Text Search
+- *"Search for information about Python asyncio"*
+- *"Find articles about machine learning best practices"*
+- *"Look up documentation for React hooks"*
 
-### Example Interactions
+#### Image Search
+- *"Find images of butterflies"*
+- *"Search for photos of mountain landscapes"*
+- *"Show me pictures of vintage cars"*
 
-**Text Search:**
-```
-User: Search for information about Python asyncio
-Agent: [Uses web_search with search_type="text"]
-Response: Found 10 text results with titles, URLs, and snippets
-```
+#### Video Search
+- *"Search for Python tutorial videos"*
+- *"Find cooking videos for pasta recipes"*
+- *"Look up exercise videos for beginners"*
 
-**Image Search:**
-```
-User: Find images of butterflies
-Agent: [Uses web_search with search_type="images"]
-Response: Found 10 image results with URLs, thumbnails, and dimensions
-```
+#### News Search
+- *"What's the latest news about artificial intelligence?"*
+- *"Find recent news about climate change"*
+- *"Search for today's technology news"*
 
-**Video Search:**
-```
-User: Search for Python tutorial videos
-Agent: [Uses web_search with search_type="videos", max_results=5]
-Response: Found 5 video results with durations and publishers
-```
-
-**News Search:**
-```
-User: What's the latest news about artificial intelligence?
-Agent: [Uses web_search with search_type="news"]
-Response: Found recent news articles with dates and sources
-```
-
-**Web Request:**
-```
-User: Fetch the content from https://example.com
-Agent: [Uses web_request tool]
-Response: Returns the page content as Markdown
-```
+#### Web Content Fetching
+- *"Fetch the content from https://example.com"*
+- *"Get the page content from this URL"*
+- *"Download and show me the content of this webpage"*
 
 ## Tool Details
 
