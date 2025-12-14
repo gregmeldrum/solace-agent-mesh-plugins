@@ -29,6 +29,10 @@ This agent provides the following capabilities:
 - **Natural Speech**: High-quality, natural-sounding voice synthesis
 - **Customizable**: Adjust voice selection per request
 
+## Requirements
+
+> **⚠️ Important**: This plugin requires `transformers==4.51.3`. It **cannot** be installed in the same environment as the Local MLX Vision plugin, which requires `transformers>=4.57.3`. These two plugins must be run in separate environments due to conflicting transformers library versions.
+
 ## Configuration
 
 This plugin does not require any environment variables or API keys.

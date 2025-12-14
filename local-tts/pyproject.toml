@@ -19,7 +19,7 @@ readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
     "torch",
-    "transformers",
+    "transformers==4.51.3",
     "ffmpeg-python",
     "vibevoice @ git+https://github.com/microsoft/VibeVoice.git",
 ]

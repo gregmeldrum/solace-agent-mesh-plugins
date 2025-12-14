@@ -23,6 +23,8 @@ This plugin enables SAM agents to process images using the Qwen3-VL-2B-Instruct-
 - Python 3.10 or higher
 - Minimum 8GB RAM (16GB recommended)
 
+> **⚠️ Important**: This plugin requires `transformers>=4.57.3`. It **cannot** be installed in the same environment as the Local TTS plugin, which requires `transformers==4.51.3`. These two plugins must be run in separate environments due to conflicting transformers library versions.
+
 ### Dependencies
 
 The plugin automatically installs:
