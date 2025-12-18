@@ -176,9 +176,70 @@ async def analyze_image(
                     "error": error_msg
                 }
 
-            # Extract bytes from Part object
-            artifact_data = artifact_part.inline_data.data
-            log.debug(f"{log_identifier} Extracted {len(artifact_data)} bytes from artifact Part")
+            # Extract bytes from artifact - handle different return types
+            # The artifact service can return different types depending on version:
+            # - Part with inline_data.data (Google A2A format)
+            # - Part with file.bytes (A2A FilePart format)
+            # - Direct bytes
+            # - Tuple with Part as first element
+            artifact_data = None
+
+            log.debug(f"{log_identifier} Artifact part type: {type(artifact_part)}, attrs: {dir(artifact_part) if artifact_part else 'None'}")
+
+            if isinstance(artifact_part, bytes):
+                # Direct bytes
+                artifact_data = artifact_part
+            elif hasattr(artifact_part, 'inline_data') and artifact_part.inline_data is not None:
+                # Part object with inline_data (Google format)
+                if hasattr(artifact_part.inline_data, 'data'):
+                    artifact_data = artifact_part.inline_data.data
+                elif hasattr(artifact_part.inline_data, 'blob'):
+                    artifact_data = artifact_part.inline_data.blob
+            elif hasattr(artifact_part, 'file') and artifact_part.file is not None:
+                # A2A FilePart format
+                if hasattr(artifact_part.file, 'bytes'):
+                    artifact_data = artifact_part.file.bytes
+                elif hasattr(artifact_part.file, 'content_bytes'):
+                    artifact_data = artifact_part.file.content_bytes
+            elif hasattr(artifact_part, 'content_bytes'):
+                # SamFilePart format
+                artifact_data = artifact_part.content_bytes
+            elif hasattr(artifact_part, 'data'):
+                # Object with direct data attribute
+                artifact_data = artifact_part.data
+            elif isinstance(artifact_part, tuple) and len(artifact_part) >= 1:
+                # Tuple - recursively extract from first element
+                first_elem = artifact_part[0]
+                if isinstance(first_elem, bytes):
+                    artifact_data = first_elem
+                elif hasattr(first_elem, 'inline_data') and first_elem.inline_data and hasattr(first_elem.inline_data, 'data'):
+                    artifact_data = first_elem.inline_data.data
+                elif hasattr(first_elem, 'file') and first_elem.file and hasattr(first_elem.file, 'bytes'):
+                    artifact_data = first_elem.file.bytes
+
+            if artifact_data is None:
+                error_msg = f"Could not extract data from artifact. Type: {type(artifact_part)}"
+                log.error(f"{log_identifier} {error_msg}")
+                # Log more details for debugging
+                if artifact_part is not None:
+                    log.error(f"{log_identifier} Artifact attributes: {[a for a in dir(artifact_part) if not a.startswith('_')]}")
+                return {
+                    "status": "error",
+                    "error": error_msg,
+                    "message": "Could not extract data from artifact. Please check logs for details."
+                }
+
+            # Ensure we have bytes
+            if not isinstance(artifact_data, bytes):
+                error_msg = f"Artifact data is not bytes: {type(artifact_data)}"
+                log.error(f"{log_identifier} {error_msg}")
+                return {
+                    "status": "error",
+                    "error": error_msg,
+                    "message": "Could not extract bytes from artifact."
+                }
+
+            log.debug(f"{log_identifier} Extracted {len(artifact_data)} bytes from artifact")
 
             # Save artifact to temporary file
             suffix = Path(artifact_filename).suffix or ".png"
