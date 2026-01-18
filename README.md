@@ -4,6 +4,7 @@
 
 ## Overview
 This repository contains a collection of plugins for [Solace Agent Mesh (SAM)](https://github.com/SolaceLabs/solace-agent-mesh). These plugins extend the functionality of SAM by providing additional capabilities and integrations. These plugins are built by the community and are not officially supported by Solace. 
+⭐️ Please leave a star on the [Solace Agent Mesh (SAM)](https://github.com/SolaceLabs/solace-agent-mesh) repo while you are there. 
 
 ## Available Plugins
 *This section will be updated as plugins are added to the repository.*
